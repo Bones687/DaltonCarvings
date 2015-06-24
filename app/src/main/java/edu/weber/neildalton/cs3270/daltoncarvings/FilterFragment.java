@@ -81,14 +81,13 @@ public class FilterFragment extends Fragment {
         adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         type.setAdapter(adapter);
 
-        String [] mainValues = {""};
+        String [] mainValues = {"All", "Material", "Item"};
         ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, mainValues);
         adapter2.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         main.setAdapter(adapter2);
 
 
         main.setOnItemSelectedListener(getNewListForSpinner);
-        main.setOnTouchListener(setMainSpinner);
 
         itemInfoBundle = getArguments(); // null if creating new item
 
@@ -120,13 +119,19 @@ public class FilterFragment extends Fragment {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
             if (main.getSelectedItem().toString() == "Material"){
-                String [] values = {"Wood", "Metal", "Organic", "Plastic", "Knife Blank", "Cufflink Blank", "Ring Blank", "Other"};
+                String [] values = {"All", "Wood", "Metal", "Organic", "Plastic", "Knife Blank", "Cufflink Blank", "Ring Blank", "Other"};
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, values);
                 adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
                 type.setAdapter(adapter);
             }
             else if (main.getSelectedItem().toString() == "Item") {
-                String [] values = {"Knife", "Cufflinks", "Pendants", "Ring", "Custom Order"};
+                String [] values = {"All", "Knife", "Cufflinks", "Pendants", "Ring", "Custom Order"};
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, values);
+                adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+                type.setAdapter(adapter);
+            }
+            else {
+                String [] values = {"All"};
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, values);
                 adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
                 type.setAdapter(adapter);
@@ -167,8 +172,14 @@ public class FilterFragment extends Fragment {
 
                             double tempLow = !low.getText().toString().equals("") ? Double.parseDouble(low.getText().toString()) : 0;
                             double tempHigh = !high.getText().toString().equals("") ? Double.parseDouble(high.getText().toString()) : 0;
-                            String tempMain = !main.getSelectedItem().toString().equals("") ? main.getSelectedItem().toString() : "";
-                            String tempType = !type.getSelectedItem().toString().equals("") ? type.getSelectedItem().toString() : "";
+
+                            String tempType = "";
+                            if (!type.getSelectedItem().toString().equals("") && !type.getSelectedItem().toString().equals("All"))
+                                tempType = type.getSelectedItem().toString();
+
+                            String tempMain = "";
+                            if (main.getSelectedItem().toString() == "Material" || main.getSelectedItem().toString()=="Item")
+                                tempMain = main.getSelectedItem().toString();
                             if (tempLow > tempHigh)
                             {
                                 double temp = tempLow;
