@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/addEditScrollView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnCount="1"
+        android:orientation="vertical"
+        android:useDefaultMargins="true" >
+
+        <EditText
+            android:id="@+id/nameEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/item_name"
+            android:imeOptions="actionNext"
+            android:inputType="text" >
+        </EditText>
+
+        <Spinner
+            android:id="@+id/itemMainTypeEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:imeOptions="actionNext">
+        </Spinner>
+
+        <Spinner
+            android:id="@+id/itemTypeEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:imeOptions="actionNext">
+        </Spinner>
+
+        <EditText
+            android:id="@+id/itemPriceEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/item_price"
+            android:imeOptions="actionNext"
+            android:inputType="text|numberDecimal"
+            android:numeric="decimal">
+        </EditText>
+
+        <EditText
+            android:id="@+id/itemQuantityEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/item_quantity"
+            android:imeOptions="actionNext"
+            android:numeric="integer"
+            android:inputType="number">
+        </EditText>
+
+        <EditText
+            android:id="@+id/itemUrlEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/item_buy_url"
+            android:imeOptions="actionNext"
+            android:inputType="text|textWebEditText" >
+        </EditText>
+
+        <Button
+            android:id="@+id/saveitemButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/button_save_item" >
+        </Button>
+    </GridLayout>
+
+</ScrollView>

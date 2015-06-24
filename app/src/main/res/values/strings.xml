@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Dalton Carvings</string>
+    <string name="no_items">No Items</string>
+    <string name="menuitem_add">Add</string>
+    <string name="menuitem_filter">Filter</string>
+    <string name="menuitem_edit">Edit</string>
+    <string name="menuitem_delete">Delete</string>
+    <string name="button_save_item">Save Item</string>
+    <string name="hint_id">Id (Required)</string>
+    <string name="hint_name">Name</string>
+    <string name="hint_type">Item Type</string>
+    <string name="hint_quantity">Item Qty</string>
+    <string name="hint_price">Item Price</string>
+    <string name="hint_buy_url">Buy More</string>
+    <string name="item_id">Id (Required)</string>
+    <string name="item_name">Name</string>
+    <string name="item_type">Item Type</string>
+    <string name="item_quantity">Item Qty</string>
+    <string name="item_price">Item Price</string>
+    <string name="item_buy_url">Buy More</string>
+    <string name="label_id">Id:</string>
+    <string name="label_name">Name:</string>
+    <string name="label_type">Item Type:</string>
+    <string name="label_type_main">Material/Item:</string>
+    <string name="label_quantity">Item Qty:</string>
+    <string name="label_price">Item Price:</string>
+    <string name="label_buy_url">Buy More:</string>
+    <string name="confirm_title">Are You Sure?</string>
+    <string name="confirm_message">This will permanently delete the item</string>
+    <string name="ok">OK</string>
+    <string name="error_message">You must enter an item name</string>
+    <string name="button_cancel">Cancel</string>
+    <string name="button_delete">Delete</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string-array name="matItems">
+        <item>Materials</item>
+        <item>Items</item>
+    </string-array>
+</resources>
