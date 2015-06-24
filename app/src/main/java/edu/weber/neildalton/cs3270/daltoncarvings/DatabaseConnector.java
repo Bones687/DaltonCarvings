@@ -90,15 +90,15 @@ public class DatabaseConnector
     {
         String where = "";
         if (main != "")
-            where = "item_type_main = " + main;
+            where = "item_main_type = \"" + main + "\"";
         if (type != "")
-            where = where + " and item_type = " + type;
+            where = where + " AND item_type = \"" + type + "\"";
         if (where != "" && low != 0)
-            where = where + " and item_price >= " + low;
+            where = where + " AND item_price >= " + low;
         else if (low != 0)
             where = "item_price >= " + low;
         if (where != "" && high != 0)
-            where = where + " and item_price <= " + high;
+            where = where + " AND item_price <= " + high;
         else if (high != 0)
             where = "item_price >= " + high;
         if (where == "")
@@ -133,7 +133,7 @@ public class DatabaseConnector
             // query to create a new table named items
             String createQuery = "CREATE TABLE items" +
                     "(_id integer primary key autoincrement," +
-                    "name TEXT, item_type TEXT, item_main_type," +
+                    "name TEXT, item_type TEXT, item_main_type TEXT," +
                     "item_price DOUBLE, item_qty INTEGER, item_url TEXT);";
 
             db.execSQL(createQuery); // execute query to create the database

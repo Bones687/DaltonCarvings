@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -83,7 +84,7 @@ public class AddEditFragment extends Fragment
         adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         itemTypeEditText.setAdapter(adapter);
 
-        String [] mainValues = {"Materials", "Item"};
+        String [] mainValues = {"Material", "Item"};
         ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, mainValues);
         adapter2.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         itemMainTypeEditText.setAdapter(adapter2);
@@ -103,9 +104,33 @@ public class AddEditFragment extends Fragment
         Button saveitemButton =
                 (Button) view.findViewById(R.id.saveitemButton);
         saveitemButton.setOnClickListener(saveitemButtonClicked);
+
+        itemMainTypeEditText.setOnItemSelectedListener(getNewListForSpinner);
         return view;
     }
 
+    AdapterView.OnItemSelectedListener getNewListForSpinner = new AdapterView.OnItemSelectedListener() {
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            if (itemMainTypeEditText.getSelectedItem().toString() == "Material"){
+                String [] values = {"Wood", "Metal", "Organic", "Plastic", "Knife Blank", "Cufflink Blank", "Ring Blank", "Other"};
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, values);
+                adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+                itemTypeEditText.setAdapter(adapter);
+            }
+            else {
+                String [] values = {"Knife", "Cufflinks", "Pendants", "Ring", "Custom Order"};
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, values);
+                adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+                itemTypeEditText.setAdapter(adapter);
+            }
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+
+        }
+    };
     // responds to event generated when user saves a item
     OnClickListener saveitemButtonClicked = new OnClickListener()
     {

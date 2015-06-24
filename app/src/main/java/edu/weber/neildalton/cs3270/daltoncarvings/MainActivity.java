@@ -10,7 +10,6 @@ public class MainActivity extends Activity
         AddEditFragment.AddEditFragmentListener,
         FilterFragment.FilterFragmentListener
 {
-    private FilterFragment filterFragment = new FilterFragment();
     // keys for storing row ID in Bundle passed to a fragment
     public static final String ROW_ID = "row_id";
 
@@ -103,6 +102,7 @@ public class MainActivity extends Activity
 
     private void displayFilterOptions(int viewID, Bundle arguments)
     {
+        FilterFragment filterFragment = new FilterFragment();
 
         if (arguments != null) // editing existing item
             filterFragment.setArguments(arguments);
@@ -142,8 +142,10 @@ public class MainActivity extends Activity
     @Override
     public void onFilter(String main, String type, double low, double high)
     {
-
+        getFragmentManager().popBackStack(); // removes top of back stack
+        getFragmentManager().popBackStack(); // removes top of back stack
         itemListFragment.updateFilteredItemList(main, type, low, high);
+        //itemListFragment.updateItemList(); // refresh items
     }
 }
 

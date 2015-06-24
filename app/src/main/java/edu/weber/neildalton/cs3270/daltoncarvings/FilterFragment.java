@@ -9,11 +9,14 @@ import android.app.Fragment;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,6 +36,7 @@ public class FilterFragment extends Fragment {
 
     private FilterFragmentListener listener;
 
+    private Bundle itemInfoBundle; // arguments for editing a item
     // EditTexts for item information
     private Spinner type;
     private Spinner main;
@@ -66,16 +70,33 @@ public class FilterFragment extends Fragment {
 
         // inflate GUI and get references to EditTexts
         View view =
-                inflater.inflate(R.layout.fragment_add_edit, container, false);
+                inflater.inflate(R.layout.fragment_filter, container, false);
+
         main = (Spinner) view.findViewById(R.id.mainSpin);
         type = (Spinner) view.findViewById(R.id.typeSpin);
         low = (EditText) view.findViewById(R.id.lowPrice);
         high = (EditText) view.findViewById(R.id.highPrice);
+        String [] values ={""};
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, values);
+        adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+        type.setAdapter(adapter);
 
-        String [] mainValues = {"Materials", "Item"};
+        String [] mainValues = {""};
         ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, mainValues);
         adapter2.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         main.setAdapter(adapter2);
+
+
+        main.setOnItemSelectedListener(getNewListForSpinner);
+        main.setOnTouchListener(setMainSpinner);
+
+        itemInfoBundle = getArguments(); // null if creating new item
+
+        if (itemInfoBundle != null)
+        {
+            low.setText(itemInfoBundle.getString("low"));
+            high.setText(itemInfoBundle.getString("high"));
+        }
 
         // set Save item Button's event listener
         Button filter =
@@ -84,6 +105,39 @@ public class FilterFragment extends Fragment {
         return view;
     }
 
+    View.OnTouchListener setMainSpinner = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            String [] mainValues = {"Material", "Item"};
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, mainValues);
+            adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+            main.setAdapter(adapter);
+            return true;
+        }
+    };
+
+    AdapterView.OnItemSelectedListener getNewListForSpinner = new AdapterView.OnItemSelectedListener() {
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            if (main.getSelectedItem().toString() == "Material"){
+                String [] values = {"Wood", "Metal", "Organic", "Plastic", "Knife Blank", "Cufflink Blank", "Ring Blank", "Other"};
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, values);
+                adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+                type.setAdapter(adapter);
+            }
+            else if (main.getSelectedItem().toString() == "Item") {
+                String [] values = {"Knife", "Cufflinks", "Pendants", "Ring", "Custom Order"};
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, values);
+                adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+                type.setAdapter(adapter);
+            }
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+
+        }
+    };
     // responds to event generated when user saves a item
     View.OnClickListener filterClicked = new View.OnClickListener()
     {
@@ -91,7 +145,7 @@ public class FilterFragment extends Fragment {
         public void onClick(View v)
         {
             // AsyncTask to save item, then notify listener
-            AsyncTask<Object, Object, Object> saveitemTask =
+            AsyncTask<Object, Object, Object> filterItemTask =
                     new AsyncTask<Object, Object, Object>()
                     {
                         @Override
@@ -109,8 +163,12 @@ public class FilterFragment extends Fragment {
                                             Context.INPUT_METHOD_SERVICE);
                             imm.hideSoftInputFromWindow(
                                     getView().getWindowToken(), 0);
-                            double tempLow = Double.parseDouble(low.getText().toString());
-                            double tempHigh = Double.parseDouble(high.getText().toString());
+
+
+                            double tempLow = !low.getText().toString().equals("") ? Double.parseDouble(low.getText().toString()) : 0;
+                            double tempHigh = !high.getText().toString().equals("") ? Double.parseDouble(high.getText().toString()) : 0;
+                            String tempMain = !main.getSelectedItem().toString().equals("") ? main.getSelectedItem().toString() : "";
+                            String tempType = !type.getSelectedItem().toString().equals("") ? type.getSelectedItem().toString() : "";
                             if (tempLow > tempHigh)
                             {
                                 double temp = tempLow;
@@ -119,14 +177,15 @@ public class FilterFragment extends Fragment {
                             }
 
                             listener.onFilter(
-                                              main.getSelectedItem().toString(),
-                                              type.getSelectedItem().toString(),
+                                              tempMain,
+                                              tempType,
                                               tempLow,
                                               tempHigh
                                               );
                         }
                     }; // end AsyncTask
 
+            filterItemTask.execute((Object[]) null);
         } // end method onClick
     }; // end OnClickListener saveitemButtonClicked
 } // end class AddEditFragment

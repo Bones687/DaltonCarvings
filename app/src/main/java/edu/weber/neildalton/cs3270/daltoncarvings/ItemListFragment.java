@@ -5,6 +5,7 @@ import android.app.ListFragment;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -109,7 +110,7 @@ public class ItemListFragment extends ListFragment
         protected Cursor doInBackground(Object... params)
         {
             databaseConnector.open();
-            return databaseConnector.getAllItems();
+            return databaseConnector.getFilteredItems(main, type, low, high);
         }
 
         // use the Cursor returned from the doInBackground method
@@ -193,7 +194,6 @@ public class ItemListFragment extends ListFragment
         type = iType;
         low = iLow;
         high = iHigh;
-
         new GetItemFilterTask().execute((Object[]) null);
     }
 } // end class itemListFragment
